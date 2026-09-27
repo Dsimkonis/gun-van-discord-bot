@@ -1,0 +1,27 @@
+name: Gun Van Daily Update
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    # 06:17 UTC every day
+    - cron: "17 6 * * *"
+
+jobs:
+  gunvan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Get Gun Van and send Discord message
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        run: |
+          node gunvan.js
